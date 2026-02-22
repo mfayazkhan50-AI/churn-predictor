@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChurnGuard AI • M Fayaz Khan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 24px;
+        }
+
+        /* Glassmorphism Effect */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .developer-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 24px;
+            border-radius: 100px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .stats-badge {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            padding: 20px 20px 0;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            border: none;
+            background: transparent;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            border-radius: 12px 12px 0 0;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: #3b82f6;
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        .tab-btn:hover {
+            color: #1e293b;
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .tab-btn.active {
+            color: #3b82f6;
+            background: white;
+        }
+
+        .tab-btn.active::after {
+            width: 80%;
+        }
+
+        /* Form Content */
+        .tab-content {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            padding: 20px 30px 30px;
+        }
+
+        .predict-btn {
+            flex: 2;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.5);
+        }
+
+        .predict-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.6);
+        }
+
+        .clear-btn {
+            flex: 1;
+            background: white;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .clear-btn:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        /* Right Panel - Results */
+        .result-panel {
+            padding: 30px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .result-header h2 {
+            color: #1e293b;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .developer-name {
+            color: #3b82f6;
+            font-weight: 600;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Result Badge */
+        .result-badge {
+            text-align: center;
+            padding: 24px;
+            border-radius: 24px;
+            margin: 20px 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            animation: slideUp 0.5s ease;
+        }
+
+        .result-badge.high {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #dc2626;
+            box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.2);
+        }
+
+        .result-badge.low {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #16a34a;
+            box-shadow: 0 10px 20px -5px rgba(22, 163, 74, 0.2);
+        }
+
+        /* Probability Circle */
+        .probability-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            margin: 30px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s ease;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.2);
+        }
+
+        .metric-label {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .metric-value.small {
+            font-size: 1.2rem;
+        }
+
+        /* Recommendation Box */
+        .recommendation-box {
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 25px;
+            animation: slideUp 0.5s ease;
+        }
+
+        .recommendation-box.high {
+            background: linear-gradient(135deg, #fee2e2 0%, #ffebee 100%);
+            border-left: 6px solid #dc2626;
+        }
+
+        .recommendation-box.low {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-left: 6px solid #16a34a;
+        }
+
+        .recommendation-box h3 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .recommendation-box p {
+            color: #334155;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .recommendation-box ul {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .recommendation-box li {
+            margin: 10px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .recommendation-box li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: bold;
+        }
+
+        /* No Result State */
+        .no-result {
+            text-align: center;
+            color: #94a3b8;
+            padding: 60px 20px;
+            font-size: 1.1rem;
+            background: #f8fafc;
+            border-radius: 24px;
+        }
+
+        .no-result p:first-child {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 20px;
+        }
+
+        .footer strong {
+            color: #3b82f6;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-panel {
+                position: static;
+            }
+            
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Panel -->
+        <div class="glass-panel">
+            <div class="header">
+                <h1>ChurnGuard AI</h1>
+                <div class="developer-badge">Developed by M Fayaz Khan</div>
+                
+                <div class="stats-badge">
+                    <div class="stat-item">
+                        <div class="stat-value">78%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">72%</div>
+                        <div class="stat-label">Recall</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">Random Forest</div>
+                        <div class="stat-label">Model</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('personal')">Personal</button>
+                <button class="tab-btn" onclick="showTab('services')">Services</button>
+                <button class="tab-btn" onclick="showTab('security')">Security</button>
+                <button class="tab-btn" onclick="showTab('streaming')">Streaming</button>
+                <button class="tab-btn" onclick="showTab('billing')">Billing</button>
+            </div>
+
+            <form method="post" action="/predict">
+                <!-- Personal Tab -->
+                <div id="personal" class="tab-content active">
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <select name="gender">
+                                <option value="Male" {{'selected' if gender=='Male'}}>Male</option>
+                                <option value="Female" {{'selected' if gender=='Female'}}>Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Senior Citizen</label>
+                            <select name="senior_citizen">
+                                <option value="No" {{'selected' if senior_citizen=='No'}}>No</option>
+                                <option value="Yes" {{'selected' if senior_citizen=='Yes'}}>Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Partner</label>
+                            <select name="partner">
+                                <option value="No" {{'selected' if partner=='No'}}>No</option>
+                                <option value="Yes" {{'selected' if partner=='Yes'}}>Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Dependents</label>
+                            <select name="dependents">
+                                <option value="No" {{'selected' if dependents=='No'}}>No</option>
+                                <option value="Yes" {{'selected' if dependents=='Yes'}}>Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tenure (months)</label>
+                            <input type="number" name="tenure" min="0" max="72" value="{{tenure or 12}}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services Tab -->
+                <div id="services" class="tab-content">
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Phone Service</label>
+                            <select name="phone_service">
+                                <option value="Yes" {{'selected' if phone_service=='Yes'}}>Yes</option>
+                                <option value="No" {{'selected' if phone_service=='No'}}>No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Multiple Lines</label>
+                            <select name="multiple_lines">
+                                <option value="No" {{'selected' if multiple_lines=='No'}}>No</option>
+                                <option value="Yes" {{'selected' if multiple_lines=='Yes'}}>Yes</option>
+                                <option value="No phone service" {{'selected' if multiple_lines=='No phone service'}}>No phone service</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Internet Service</label>
+                            <select name="internet_service">
+                                <option value="DSL" {{'selected' if internet_service=='DSL'}}>DSL</option>
+                                <option value="Fiber optic" {{'selected' if internet_service=='Fiber optic'}}>Fiber optic</option>
+                                <option value="No" {{'selected' if internet_service=='No'}}>No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Tab -->
+                <div id="security" class="tab-content">
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Online Security</label>
+                            <select name="online_security">
+                                <option value="No" {{'selected' if online_security=='No'}}>No</option>
+                                <option value="Yes" {{'selected' if online_security=='Yes'}}>Yes</option>
+                                <option value="No internet service" {{'selected' if online_security=='No internet service'}}>No internet service</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Online Backup</label>
+                            <select name="online_backup">
+                                <option value="No" {{'selected' if online_backup=='No'}}>No</option>
+                                <option value="Yes" {{'selected' if online_backup=='Yes'}}>Yes</option>
+                                <option value="No internet service" {{'selected' if online_backup=='No internet service'}}>No internet service</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Device Protection</label>
+                            <select name="device_protection">
+                                <option value="No" {{'selected' if device_protection=='No'}}>No</option>
+                                <option value="Yes" {{'selected' if device_protection=='Yes'}}>Yes</option>
+                                <option value="No internet service" {{'selected' if device_protection=='No internet service'}}>No internet service</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tech Support</label>
+                            <select name="tech_support">
+                                <option value="No" {{'selected' if tech_support=='No'}}>No</option>
+                                <option value="Yes" {{'selected' if tech_support=='Yes'}}>Yes</option>
+                                <option value="No internet service" {{'selected' if tech_support=='No internet service'}}>No internet service</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Streaming Tab -->
+                <div id="streaming" class="tab-content">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Streaming TV</label>
+                            <select name="streaming_tv">
+                                <option value="No" {{'selected' if streaming_tv=='No'}}>No</option>
+                                <option value="Yes" {{'selected' if streaming_tv=='Yes'}}>Yes</option>
+                                <option value="No internet service" {{'selected' if streaming_tv=='No internet service'}}>No internet service</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Streaming Movies</label>
+                            <select name="streaming_movies">
+                                <option value="No" {{'selected' if streaming_movies=='No'}}>No</option>
+                                <option value="Yes" {{'selected' if streaming_movies=='Yes'}}>Yes</option>
+                                <option value="No internet service" {{'selected' if streaming_movies=='No internet service'}}>No internet service</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Billing Tab -->
+                <div id="billing" class="tab-content">
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Contract</label>
+                            <select name="contract">
+                                <option value="Month-to-month" {{'selected' if contract=='Month-to-month'}}>Month-to-month</option>
+                                <option value="One year" {{'selected' if contract=='One year'}}>One year</option>
+                                <option value="Two year" {{'selected' if contract=='Two year'}}>Two year</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Paperless Billing</label>
+                            <select name="paperless_billing">
+                                <option value="Yes" {{'selected' if paperless_billing=='Yes'}}>Yes</option>
+                                <option value="No" {{'selected' if paperless_billing=='No'}}>No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Method</label>
+                            <select name="payment_method">
+                                <option value="Electronic check" {{'selected' if payment_method=='Electronic check'}}>Electronic check</option>
+                                <option value="Mailed check" {{'selected' if payment_method=='Mailed check'}}>Mailed check</option>
+                                <option value="Bank transfer (automatic)" {{'selected' if payment_method=='Bank transfer (automatic)'}}>Bank transfer (automatic)</option>
+                                <option value="Credit card (automatic)" {{'selected' if payment_method=='Credit card (automatic)'}}>Credit card (automatic)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Monthly Charges ($)</label>
+                            <input type="number" name="monthly_charges" step="0.01" value="{{monthly_charges or 70}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Total Charges ($)</label>
+                            <input type="number" name="total_charges" step="0.01" value="{{total_charges or 500}}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button type="submit" class="predict-btn">Predict Churn Risk</button>
+                    <button type="button" class="clear-btn" onclick="window.location.href='/'">Clear</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="glass-panel result-panel">
+            <div class="result-header">
+                <h2>Analysis Result</h2>
+                <div class="developer-name">M Fayaz Khan</div>
+            </div>
+
+            {% if prediction %}
+                <div class="result-badge {{ 'high' if 'HIGH' in prediction else 'low' }}">
+                    {{ prediction }}
+                </div>
+
+                <div class="probability-circle" id="probabilityCircle">
+                    {{ probability }}
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Churn Probability</div>
+                        <div class="metric-value">{{ probability }}</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Tenure</div>
+                        <div class="metric-value">{{ tenure }} <span style="font-size: 0.9rem;">months</span></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Monthly</div>
+                        <div class="metric-value">${{ "%.2f"|format(monthly_charges|float) }}</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Total</div>
+                        <div class="metric-value">${{ "%.0f"|format(total_charges|float) }}</div>
+                    </div>
+                </div>
+
+                <div class="recommendation-box {{ 'high' if 'HIGH' in prediction else 'low' }}">
+                    <h3>Business Recommendation</h3>
+                    {% if 'HIGH' in prediction %}
+                    <p>
+                        <strong>⚠️ Immediate Action Required</strong>
+                        <ul>
+                            <li>Send 25% retention discount for next 3 months</li>
+                            <li>Schedule priority customer success call</li>
+                            <li>Offer free upgrade to annual contract</li>
+                            <li>Add to high-risk monitoring list</li>
+                        </ul>
+                    </p>
+                    {% else %}
+                    <p>
+                        <strong>✅ Customer is Loyal</strong>
+                        <ul>
+                            <li>Send satisfaction survey with 10% discount</li>
+                            <li>Offer referral program - Get $50 credit</li>
+                            <li>Consider upsell opportunities</li>
+                            <li>Regular engagement campaign</li>
+                        </ul>
+                    </p>
+                    {% endif %}
+                </div>
+
+                <script>
+                    const prob = {{ prob_raw }};
+                    const circle = document.getElementById('probabilityCircle');
+                    const degrees = prob * 360;
+                    circle.style.background = `conic-gradient(#3b82f6 ${degrees}deg, #e2e8f0 ${degrees}deg)`;
+                </script>
+
+            {% else %}
+                <div class="no-result">
+                    <p>👈</p>
+                    <p>Fill the form and click Predict to see analysis</p>
+                    <p style="font-size: 0.9rem; margin-top: 20px;">Powered by Random Forest • 78% Accuracy</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="footer">
+            <p>Developed by <strong>M Fayaz Khan</strong> | ChurnGuard AI | Enterprise Customer Churn Prediction</p>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
