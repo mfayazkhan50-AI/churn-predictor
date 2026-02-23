@@ -10,6 +10,7 @@ An end-to-end machine learning project that predicts customer churn for a teleco
 
 ## Live Demo
 **[Click here to try the app!]((https://churn-guard.streamlit.app/))**
+https://churn-guard.streamlit.app/
 
 ## Project Overview
 - **Goal**: Identify which customers are likely to churn
