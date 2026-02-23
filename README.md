@@ -1,9 +1,15 @@
 # Customer Churn Prediction - ChurnGuard AI
 
+![Python](https://img.shields.io/badge/Python-3.9-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.28-red)
+![Random Forest](https://img.shields.io/badge/Model-Random%20Forest-orange)
+![Accuracy](https://img.shields.io/badge/Accuracy-78%25-brightgreen)
+![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Deployed-yellow)
+
 An end-to-end machine learning project that predicts customer churn for a telecom company. The system uses a Random Forest model that correctly identifies churn 78% of the time and provides practical business recommendations based on the predictions.
 
 ## Live Demo
-[Deployed on Render](#) (Add your link after deployment)
+**[Click here to try the app!](https://huggingface.co/spaces/mfayazkhan/churn-predictor)**
 
 ## Project Overview
 - **Goal**: Identify which customers are likely to churn
@@ -13,17 +19,16 @@ An end-to-end machine learning project that predicts customer churn for a teleco
 - **Recall**: 72% (How well we catch actual churners)
 
 ## Tech Stack
-- **Backend**: FastAPI (Python)
-- **Frontend**: HTML5, CSS3, Jinja2 Templates
+- **Frontend & Backend**: Streamlit (Python)
 - **ML Libraries**: scikit-learn, pandas, joblib
-- **Deployment**: Render (Free Tier)
+- **Deployment**: Hugging Face Spaces (Free)
 
 ## Features
-- **Interactive Web Interface** - Simple form with organized tabbed sections
-- **Real-time Predictions** - Get instant churn risk assessment
+- **Interactive Web Interface** - Clean tabs to organize customer information
+- **Real-time Predictions** - Instant churn risk assessment
 - **Business Recommendations** - Practical suggestions based on risk level
-- **Clean Design** - Modern glassmorphism look with smooth animations
-- **Mobile Responsive** - Works smoothly on phones, tablets, and desktops
+- **Metrics Dashboard** - Key customer metrics at a glance
+- **Mobile Responsive** - Works smoothly on all devices
 
 ## Model Performance
 We tested three different models to find the best one:
@@ -40,7 +45,7 @@ We tested three different models to find the best one:
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/YOUR_USERNAME/churn-predictor.git
+git clone https://github.com/mfayazkhan50-AI/churn-predictor.git
 cd churn-predictor
 ```
 
@@ -49,14 +54,14 @@ cd churn-predictor
 pip install -r requirements.txt
 ```
 
-3. **Start the application**
+3. **Run the Streamlit app**
 ```bash
-uvicorn app:app --reload
+streamlit run app.py
 ```
 
 4. **Open in browser**
 ```
-http://localhost:8000
+http://localhost:8501
 ```
 
 ## Project Structure
@@ -65,9 +70,7 @@ churn-predictor/
 ├── model/
 │   ├── churn_model_rf.pkl    # Trained Random Forest model
 │   └── model_columns.pkl      # Feature names needed for predictions
-├── templates/
-│   └── index.html             # Frontend interface
-├── app.py                      # FastAPI application
+├── app.py                      # Streamlit application
 ├── requirements.txt            # Python dependencies
 └── README.md                   # Project documentation
 ```
@@ -86,9 +89,8 @@ churn-predictor/
 
 ## Developer
 **M Fayaz Khan**
-- Portfolio: [Your Portfolio Link]
-- LinkedIn: [Your LinkedIn]
-- GitHub: [Your GitHub]
+- GitHub: [@mfayazkhan50-AI](https://github.com/mfayazkhan50-AI)
+- LinkedIn: [M Fayaz Khan](https://www.linkedin.com/in/m-fayaz-khan-882996251/)
 
 ## License
 MIT License - Feel free to use and modify this project.
