@@ -42,39 +42,6 @@ We tested three different models to find the best one:
 
 **Winner**: Random Forest - It catches the highest number of customers who actually end up churning, which is exactly what we want.
 
-## Local Setup
-
-1. **Clone the repository**
-```bash
-git clone https://github.com/mfayazkhan50-AI/churn-predictor.git
-cd churn-predictor
-```
-
-2. **Install required packages**
-```bash
-pip install -r requirements.txt
-```
-
-3. **Run the Streamlit app**
-```bash
-streamlit run app.py
-```
-
-4. **Open in browser**
-```
-http://localhost:8501
-```
-
-## Project Structure
-```
-churn-predictor/
-├── model/
-│   ├── churn_model_rf.pkl    # Trained Random Forest model
-│   └── model_columns.pkl      # Feature names needed for predictions
-├── app.py                      # Streamlit application
-├── requirements.txt            # Python dependencies
-└── README.md                   # Project documentation
-```
 
 ## Key Insights from Data Analysis
 - Customers on **month-to-month contracts** are much more likely to leave
