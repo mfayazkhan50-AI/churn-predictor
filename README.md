@@ -58,7 +58,7 @@ We tested three different models to find the best one:
 ## Developer
 **M Fayaz Khan**
 - GitHub: [@mfayazkhan50-AI](https://github.com/mfayazkhan50-AI)
-- LinkedIn: [M Fayaz Khan](https://www.linkedin.com/in/m-fayaz-khan-882996251/)
+- LinkedIn: [Muhammad Fayaz Khan](https://www.linkedin.com/in/muhammad-fayaz-khan-271487381/)
 
 ## License
 MIT License - Feel free to use and modify this project.
