@@ -9,7 +9,7 @@
 An end-to-end machine learning project that predicts customer churn for a telecom company. The system uses a Random Forest model that correctly identifies churn 78% of the time and provides practical business recommendations based on the predictions.
 
 ## Live Demo
-**[Click here to try the app!](https://huggingface.co/spaces/mfayazkhan/churn-predictor)**
+**[Click here to try the app!]((https://churn-guard.streamlit.app/))**
 
 ## Project Overview
 - **Goal**: Identify which customers are likely to churn
